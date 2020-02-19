@@ -18,6 +18,9 @@ public class Course {
             if ((i+1)<count) this.obstacles[i+1] = new Wall((int) (Math.random() * jumpMax));}
     }
 
+
+
+
     public void runTournament(Team team){
         for (Competitor t: team.competitors){
             for (Obstacle c: this.obstacles){

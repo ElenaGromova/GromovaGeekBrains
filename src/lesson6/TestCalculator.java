@@ -16,6 +16,8 @@ public class TestCalculator extends Component {
     static JLabel res = new JLabel("Результат вычисления: ");
 
 
+
+
     public static void createPanelUI(Container container)
     {
         container.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);

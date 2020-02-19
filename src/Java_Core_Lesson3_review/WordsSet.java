@@ -4,6 +4,8 @@ import java.util.*;
 
 class WordsSet {
 
+
+
     private static List<String> initList(){
         return Arrays.asList("A", "B", "C", "a", "b", "c", "D", "d", "E", "e", "A", "B", "C", "A", "B", "C", "D", "d", "E", "e");
     }
