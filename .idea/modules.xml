@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/src/GeekBrainsGromova.iml" filepath="$PROJECT_DIR$/src/GeekBrainsGromova.iml" />
-      <module fileurl="file://$PROJECT_DIR$/GeekBrainsGromova1.iml" filepath="$PROJECT_DIR$/GeekBrainsGromova1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GeekBrainsGromova.iml" filepath="$PROJECT_DIR$/GeekBrainsGromova.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/GeekBrainsGromova1.iml" filepath="$PROJECT_DIR$/src/GeekBrainsGromova1.iml" />
     </modules>
   </component>
 </project>
