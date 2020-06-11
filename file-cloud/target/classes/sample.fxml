@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="center" spacing="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="file.manager.Controller" stylesheets="style.css">
+    <MenuBar>
+        <Menu text="File">
+                <MenuItem text="Exit" onAction="#menuItenFileAction"/>
+        </Menu>
+    </MenuBar>
+    <TextField fx:id="pathField" editable="false" />
+    <ListView VBox.vgrow="ALWAYS" fx:id="fileList"/>
+    <HBox>
+            <Button maxWidth="Infinity" text="View" HBox.hgrow="ALWAYS" />
+            <Button maxWidth="Infinity" text="Copy" HBox.hgrow="ALWAYS" />
+            <Button maxWidth="Infinity" text="Remove" HBox.hgrow="ALWAYS" />
+            <Button maxWidth="Infinity" text="Delete" HBox.hgrow="ALWAYS" />
+    </HBox>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>
