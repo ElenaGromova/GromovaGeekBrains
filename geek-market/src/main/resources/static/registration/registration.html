@@ -1,0 +1,19 @@
+<div class="mb-3 text-center">
+    <form novalidate ng-submit="tryToReg()" style="max-width: 350px; padding: 15px; margin: 0 auto;">
+        <h1 class="h3 mb-3 font-weight-normal">Пожалуйста, зарегистрируйтесь</h1>
+
+        <label for="inputUsername">Имя пользователя:</label>
+        <input type="text" ng-model="newUser.username" id="inputUsername" class="form-control" placeholder="Логин" style="margin-bottom: 10px;" required="">
+
+        <label for="inputPassword">Пароль:</label>
+        <input type="password"  ng-model="newUser.password" id="inputPassword" class="form-control" placeholder="Пароль" style="margin-bottom: 10px;" required="">
+
+        <input type="password" ng-model="newUser.confirmPassword" id="confirmPassword" class="form-control" placeholder="Подтверждение пароля" style="margin-bottom: 10px;" required="">
+
+        <p ng-if="newUser.password != newUser.confirmPassword" style="color: red; front-size: 50%">Пароли не совпадают!</p>
+        <button class="btn btn-success" ng-if="newUser.password == newUser.confirmPassword" type="submit">Зарегистрироваться</button>
+
+        <p class="mt-5 mb-3 text-muted">© GeekBrains 2020</p>
+    </form>
+
+</div>
