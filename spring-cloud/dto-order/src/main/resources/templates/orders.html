@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Orders!</h1>
+<table class="table table-hover" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>Номер</td>
+        <td>Товары</td>
+        <td></td>
+    </tr>
+    <tbody>
+
+    <tr ng-repeat="o in Orders">
+        <td>{{o.id}}</td>
+        <td>{{o.products}}</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

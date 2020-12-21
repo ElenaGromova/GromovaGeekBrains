@@ -1,0 +1,58 @@
+<div class="mb-3 text-center">
+    <form novalidate ng-submit="CheckPass()" style="max-width: 600px; padding: 10px; margin: 0 auto;">
+        <h1 class="form-group col-md-6 h3 mb-3 font-weight-normal">Ваш профиль:</h1>
+
+        <div class="form-group col-md-6">
+        <label for="inputFirstname">Имя:</label>
+        <input type="text" ng-model="profile.firstname" ng-if="profile.firstname != null" value="{{profile.firstname}}"
+               id="inputFirstname" class="form-control" placeholder="Имя" style="margin-bottom: 10px;">
+        </div>
+
+        <div class="form-group col-md-6">
+        <label for="inputLastname">Фамилия:</label>
+        <input type="text" ng-model="profile.lastname" ng-if="profile.lastname != null" value="{{profile.lastname}}"
+               id="inputLastname" class="form-control" placeholder="Фамилия" style="margin-bottom: 10px;" >
+        </div>
+
+        <div class="form-group col-md-6">
+        <label for="inputPhone">Телефон:</label>
+        <input type="text" ng-model="profile.phone" ng-if="profile.phone != null" value="{{profile.phone}}"
+               id="inputPhone" class="form-control" placeholder="Телефон" style="margin-bottom: 10px;" >
+        </div>
+
+        <div class="form-group col-md-6">
+        <label for="inputEmail">Email:</label>
+        <input type="text" ng-model="profile.email" ng-if="profile.email != null" value="{{profile.email}}"
+               id="inputEmail" class="form-control" placeholder="Email" style="margin-bottom: 10px;" >
+        </div>
+
+        <div class="form-group col-md-6">
+        <label for="inputBirthday">Дата рождения:</label>
+        <input type="date" ng-model="profile.birthday" ng-if="profile.birthday != null" value="{{profile.birthday}}"
+               id="inputBirthday" class="form-control" placeholder="Дата рождения" style="margin-bottom: 10px;" >
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="inputGender">Пол:</label>
+            <select class="form-control" ng-model="profile.gender_id"  ng-options="g.title for g in GendersList" id="inputGender" value="{{g.id}}">
+                <option value="">{{profile.gender.title}}</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="profileCityId">Город проживания:</label>
+            <select class="form-control" ng-model="profile.city_id"  ng-options="c.title for c in CitiesList" id="profileCityId" value="{{c.id}}">
+                <option value="">{{profile.city.title}}</option>
+            </select>
+        </div>
+
+        <div class="form-group col-md-6">
+        <label for="inputPassword">Введите пароль для подтверждения изменений профиля:</label>
+        <input type="password" ng-model="user.password" id="inputPassword" class="form-control" placeholder="Пароль" style="margin-bottom: 10px;" required="">
+        </div>
+
+        <button class="btn btn-success" ng-if="user.password != null" type="submit">Изменить</button>
+
+    </form>
+
+</div>
