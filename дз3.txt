@@ -1,0 +1,60 @@
+//Builder
+
+public interface DeliveryBuilder{
+	void setDeliveryType(String type);
+	void setDeliveryPaymentMethod(String payment);
+	void setDeliveryCost(int cost);
+	void setDeliveryTerm(int term);
+}
+
+public class Delivery{
+    private String type;
+    private String payment;
+    private int cost;
+    private int term;
+
+    public Delivery(type, payment, cost, term){
+        this.type = type;
+	this.payment = payment;
+	this.cost = cost;
+	this.term = term;
+    }
+}
+
+public class DeliveryBuilderImpl implements DeliveryBuilder{
+    private String type;
+    private String payment;
+    private int cost;
+    private int term;
+
+    public DeliveryBuilderImpl type(String type) {
+        this.type = type;
+	return this;
+    }
+
+    public DeliveryBuilderImpl payment(String payment) {
+        this.payment = payment;
+	return this;
+    }
+
+    public DeliveryBuilderImpl cost(int cost) {
+        this.cost = cost;
+	return this;
+    }
+
+    public DeliveryBuilderImpl term(int term) {
+        this.term = term;
+	return this;
+    }
+
+    public Delivery getDelivery(){
+        return new Delivery(type, payment, cost, term);
+    }
+}
+
+public class Application{
+  public static void main(){
+      Delivery delivery1 = new DeliveryBuilderImpl().type("курьером").payment("наличные").cost(300).term(2).getDelivery();
+      Delivery delivery2 = new DeliveryBuilderImpl().type("самовывоз").payment("карта").cost(0).term(1).getDelivery();
+  }
+}
