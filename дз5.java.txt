@@ -1,0 +1,117 @@
+Command
+Есть единица заказа = товар, количество которого может увеличиваться и уменьшаться
+
+public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @Column(name = "quantity")
+    private int quantity;
+
+    @Column(name = "price_per_product")
+    private int pricePerProduct;
+
+    @Column(name = "price")
+    private int price;
+
+    public OrderItem(Product p) {
+        this.product = p;
+        this.quantity = 1;
+        this.price = p.getPrice();
+        this.pricePerProduct = p.getPrice();
+    }
+
+    public void incrementQuantity() {
+        quantity++;
+    }
+
+    public void decrementQuantity() {
+        quantity--;
+    }
+}
+
+
+==============================
+
+Есть интерфейс команды
+public interface Command{
+    void execute();
+}
+
+==============================
+
+Инкапсулируем умения единицы заказа в классах, которые реализуют интерфейс Command
+
+public class IncrementQuantityCommand implements Command{
+   private OrderItem orderItemThis;
+
+   public IncrementQuantityCommand(OrderItem orderItem){
+        this.orderItemThis=orderItem;
+       }
+
+   public void execute(){
+      orderItemThis.incrementQuantity();
+   }
+}
+
+public class DecrementQuantityCommand implements Command{
+   private OrderItem orderItemThis;
+
+   public DecrementQuantityCommand(OrderItem orderItem){
+        this.orderItemThis=orderItem;
+       }
+
+   public void execute(){
+      orderItemThis.decrementQuantity();
+   }
+}
+
+==================================================
+
+Объект, который принимает инкапсулированные методы
+
+public class InvokerClass {
+    private Command incCommand;
+    private Command decCommand;
+
+    public InvokerClass(Command incrementCommand,Command decrementCommand){
+         this.incCommand=incrementCommand;
+         this.decCommand=decrementCommand;
+    }
+
+    public void incrementAction(){
+         incCommand.execute();
+    }
+
+    public void decrementAction(){
+         decCommand.execute();
+    }
+}
+
+
+=====================================
+Клиентский код
+
+public class TestCommand{
+   public static void main(String[] args){
+       OrderItem oi=new OrderItem();
+
+       Command incOrderItem = new IncrementQuantityCommand(oi);
+       Command decOrderItem = new DecrementQuantityCommand(oi);
+
+       InvokerClass inv = new  InvokerClass(incOrderItem,decOrderItem);
+
+       inv.incrementAction();
+       inv.decrementAction();
+   }
+}
