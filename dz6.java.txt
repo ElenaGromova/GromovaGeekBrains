@@ -1,0 +1,91 @@
+public class Product {
+    private Long id;
+    private String title;
+    private int price;
+    private String category;
+}
+
+
+public class ProductMapper {
+    private static Connection connection;
+    private static Statement stmt;
+
+    public static void connect() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:market.db");
+            stmt = connection.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+ public void insert(Product product) {
+        try {
+            String query = "INSERT INTO products (title, price, category) VALUES (?, ?, ?);";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, product.getTitle());
+            ps.setInt(2, product.getPrice());
+            ps.setString(3, product.getCategory());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Product findById(Long id) throws SQLException,RecordNotFoundException{
+        String query = "SELECT id, title, price, category FROM products WHERE id = ?";
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setInt(1,id);
+        try (ResultSet resultSet = ps.executeQuery()) {
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setId(resultSet.getInt(1));
+                product.setTitle(resultSet.getString(2));
+                product.setPrice(resultSet.getInt(3));
+                product.setCategory(resultSet.getString(4));
+                return product;
+            }
+        }
+
+        throw new RecordNotFoundException(id);
+    }
+
+    public void update(Product product) throws SQLException,RecordNotFoundException{
+        String query = "UPDATE products SET (title = ?, price = ?, category= ?) WHERE id = " + product.getId();
+        PreparedStatement ps = connection.prepareStatement(query);
+        try {
+           ps.setString(1, product.getTitle());
+           ps.setInt(2, product.getPrice());
+           ps.setString(3, product.getCategory());
+           ps.executeUpdate();
+        }
+
+        throw new RecordNotFoundException(product.getId());
+    }
+
+    public void delete(Product product) throws SQLException,RecordNotFoundException{
+        try {
+            String query = "DELETE FROM products WHERE id = " + product.getId();
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.executeUpdate();
+        } 
+        throw new RecordNotFoundException(product.getId());
+    }
+}
+
+public class ClientApp {
+    public static void main(String[] args) {
+        private ProductMapper pm;
+        private List<Product> pl = new ArrayList<Product>();;
+
+	Product p = pm.findById(1);
+	pl.add(1, p);
+	pm.insert(pl.get(1));
+	Product p = pm.findById(2);
+	pl.add(2, p);
+	pl.get(2).setTitle("test");
+	pm.update(pl.get(2));
+	pm.delete(pl.get(2));
+    }
+}
