@@ -1,0 +1,152 @@
+//есть класс Продукт и класс Категория
+//у класа Продукт есть конструктор без категории
+//у классов есть уровни DAO, которые позволяют взаимодействовать с БД
+// есть уровни сервисов которые позволяют управлять объектами (создавать, модифицировать, удалять и пр)
+// есть класс, который имеет доступ к сервисам продукта и категории и создает продукт
+// есть класс, который ничего не знает о сервисах продукта и категории , но создает продукт, использую класс Policy
+
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "price")
+    private int price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    public Product(String title, int price) {
+        this.title = title;
+        this.price = price;
+    }
+} 
+
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "title")
+    private String title;
+}
+
+public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
+}
+
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+}
+
+public class ProductService {
+    private final ProductRepository productRepository;
+
+    public Product saveOrUpdate(Product product) {
+        return productRepository.save(product);
+    }
+}
+
+public class CategoryService {
+    private final CategoryRepository categoryRepository;
+
+    public Category saveOrUpdate(Category category) {
+        return categoryRepository.save(category);
+    }
+    public Optional<Category> findById(Long id) {
+        return categoryRepository.findById(id);
+    }
+}
+
+public class ProductCategoryPolicy {
+    private final ProductService productService;
+    private final CategoryService categoryService;
+
+    public Product createProduct(String title, int price, Long id) {
+        Product p = new Product(title, price);
+	p.setId(null);
+	p.setCategory(categoryService.findById(id));
+	return p;
+    }
+}
+
+public class ProductController {
+    private final ProductCategoryPolicy productCategoryPolicy;
+
+    public Product createProduct(@RequestParam String title, @RequestParam int price, @RequestParam Long id) {
+        return productCategoryPolicy.createProduct(title, price, id);
+    }
+}
+
+============================================
+//есть веб-форма, которая ничего не делает с данными , а лишь передает введенные значения
+//есть контроллер, которые эти значения запрашивает, обрабатывает и передает результат фронту
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Spring MVC GeekApp</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h1>Список товаров:</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Id</td>
+            <td>Наименование</td>
+            <td>Стоимость</td>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="p : ${products}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.title}"></td>
+            <td th:text="${p.cost}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h2>Добавить товар</h2>
+    <form method="GET" th:action="@{/add_product}">
+        <label>id</label>
+        <input type="number" name="id">
+        <label>color</label>
+        <input type="text" name="title">
+        <label>cost</label>
+        <input type="number" name="cost">
+        <button class="btn btn-primary" type="submit">Добавить</button>
+    </form>
+
+</body>
+</html>
+
+
+public class ProductController {
+    private ProductService productService;
+
+    @GetMapping("/products")
+    public String productList(Model model) {
+        List<Product> products = productService.findAll();
+        model.addAttribute("products", products);
+        return "list";
+    }
+
+    @GetMapping("/add_product")
+    public String addProduct(@RequestParam int id, @RequestParam String title, @RequestParam int cost) {
+        Product product = new Product(id, title, cost);
+        productService.add(product);
+        return "redirect:/products";
+    }
+}
