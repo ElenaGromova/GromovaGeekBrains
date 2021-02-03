@@ -2,7 +2,6 @@ package lesson1.figures;
 
 public class FiguresTest {
     public static void main(String[] args) {
-
         PointXY point1 = new PointXY(1, 10);
         PointXY point2 = new PointXY(10, 1);
         PointXY point3 = new PointXY(10, 10);
