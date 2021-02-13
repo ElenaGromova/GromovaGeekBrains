@@ -1,0 +1,35 @@
+•	ошибки в расписании (фильмы накладываются друг на друга), отсортированные по возрастанию времени. Выводить надо колонки «фильм 1», «время начала», «длительность», «фильм 2», «время начала», «длительность»;
+SELECT f.title, s.start, f.duration 
+FROM films AS f 
+JOIN schedule AS sh ON f.id = sh.film_id
+JOIN session AS s ON  f.id = s.id AND (s.finish – s.start)<f.duration
+ORDER BY s.start ASC
+•	перерывы 30 минут и более между фильмами — выводить по уменьшению длительности перерыва. Колонки «фильм 1», «время начала», «длительность», «время начала второго фильма», «длительность перерыва»;
+SELECT f.title, s.start, f.duration 
+FROM films AS f 
+JOIN schedule AS sh ON f.id = sh.film_id
+JOIN session AS s ON  f.id = s.id AND (s.finish – s.start + f.duration)>0.5
+ORDER BY (s.finish – s.start + f.duration) DESC
+
+•	список фильмов, для каждого — с указанием общего числа посетителей за все время, среднего числа зрителей за сеанс и общей суммы сборов по каждому фильму (отсортировать по убыванию прибыли). Внизу таблицы должна быть строчка «итого», содержащая данные по всем фильмам сразу;
+
+SELECT f.title, COUNT(sh.ticket_id) AS people, SUM(f.price) AS kassa
+FROM films AS f
+JOIN schedule AS sh ON f.id = sh.film_id
+JOIN session AS s ON sh.session_id=s.id
+JOIN tickets AS t ON (s.session=t.session AND t.film_id=f.id)
+
+GROUP BY f.title
+ORDER BY kassa DESC;
+
+•	число посетителей и кассовые сборы, сгруппированные по времени начала фильма: с 9 до 15, с 15 до 18, с 18 до 21, с 21 до 00:00 (сколько посетителей пришло с 9 до 15 часов и т.д.).
+SELECT COUNT(*) AS people, SUM(f.price) AS kassa
+FROM tickets AS t
+JOIN session AS s ON t.session_id=s.id
+JOIN films AS f ON f.sessin_id=s.id
+
+GROUP BY s.start
+
+
+
+
