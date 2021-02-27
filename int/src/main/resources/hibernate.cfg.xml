@@ -15,7 +15,7 @@
 
         <property name="hibernate.hbm2ddl.auto">create</property>
 
-        <mapping class="lesson5.daoCrud.Item"/>
-        <mapping class="lesson5.daoCrud.User"/>
+        <mapping class="lesson55.daoCrud.Item"/>
+        <mapping class="lesson55.daoCrud.User"/>
     </session-factory>
 </hibernate-configuration>
